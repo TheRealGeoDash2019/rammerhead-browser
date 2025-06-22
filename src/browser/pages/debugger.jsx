@@ -2,7 +2,7 @@ import { getSessionContext } from "../SessionContext"
 import Markdown from "react-markdown"
 
 export function DebuggerPage() {
-    var e = getSessionContext();
+    var e = getSessionContext(); // Same as window.rhSession
 
     const markDown = [
         "# 🪲 Debugging Info",
