@@ -10,6 +10,10 @@ export async function stopIntervalAsync(timer) {
     for (const key of Object.keys(timer.promises)) {
         try {
             await timer.promises[key];
+<<<<<<< HEAD
+=======
+        // eslint-disable-next-line
+>>>>>>> 75540cf (Uhhhh)
         } catch {}
         delete timer.promises[key];
     }

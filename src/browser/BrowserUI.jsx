@@ -180,7 +180,11 @@ function RenderInternalPage(e) {
             o.f();
         }
         return (
+<<<<<<< HEAD
             n("404 not found"),
+=======
+            n(t),
+>>>>>>> 75540cf (Uhhhh)
             jsx(NotFoundPage, {
                 path: i.pathname,
                 query: i.search,
@@ -396,6 +400,7 @@ function SearchSuggestions({ onBlur, onUrlEnter, state }) {
     const inputRef = useRef();
 
     // Fetch suggestions (Google and internal)
+<<<<<<< HEAD
     const fetchSuggestions = useCallback(
         debounce(async () => {
             if (!inputRef.current) return;
@@ -421,6 +426,30 @@ function SearchSuggestions({ onBlur, onUrlEnter, state }) {
         }, 300),
         []
     );
+=======
+    const fetchSuggestions = debounce(async () => {
+        if (!inputRef.current) return;
+        const val = inputRef.current.value;
+        if (!val) {
+            setSuggestions([]);
+            return;
+        }
+        let google = [];
+        try {
+            const res = await getSessionContext().fetchProxy(
+                "https://suggestqueries.google.com/complete/search?client=firefox&q=" +
+                    encodeURIComponent(val)
+            );
+            google = (await res.json())[1] || [];
+        // eslint-disable-next-line no-empty
+        } catch {}
+        const internal = qo(val).map(e => ({ Icon: uiIcons.internalIcon, text: e }));
+        setSuggestions([
+            ...internal,
+            ...google.map(e => ({ Icon: uiIcons.searchIcon, text: e }))
+        ].slice(0, 12));
+    }, 300);
+>>>>>>> 75540cf (Uhhhh)
 
     // Handle input changes
     const handleInput = () => {
@@ -476,6 +505,10 @@ function SearchSuggestions({ onBlur, onUrlEnter, state }) {
                     type="text"
                     spellCheck="false"
                     onBlur={onBlur}
+<<<<<<< HEAD
+=======
+                    placeholder="Search or type a URL"
+>>>>>>> 75540cf (Uhhhh)
                     onKeyDown={e => {
                         if (e.key === "ArrowDown" || e.key === "ArrowUp") e.preventDefault();
                         else if (e.key === "Enter") {
@@ -526,7 +559,11 @@ function Ye(e) {
         className: "addressbar",
         style: {
             outline: l ? "2px #4285f4 solid" : "none",
+<<<<<<< HEAD
             backgroundColor: l ? "#ffffff" : "#f1f3f4",
+=======
+            backgroundColor: l ? "#ffffff" : "#f1f3f4"
+>>>>>>> 75540cf (Uhhhh)
         },
         children: [
             jsx(Separator, {}),
