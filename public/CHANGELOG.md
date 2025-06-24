@@ -1,10 +1,5 @@
 # Current version
 
-<<<<<<< HEAD
-=======
-## 
-
->>>>>>> 75540cf (Uhhhh)
 ## v1.1.5
 
 - removed deprecated Alienhub

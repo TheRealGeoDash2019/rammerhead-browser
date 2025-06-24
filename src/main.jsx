@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { StrictMode, useContext } from 'react'
-=======
 import { StrictMode } from 'react'
->>>>>>> 75540cf (Uhhhh)
 import ReactDOM from 'react-dom'
 import './main.css'
 import "regenerator-runtime/runtime.js";

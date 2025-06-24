@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-export function NewTabPage() {
-    return (
-        <div className="rhpages">
-            <h2 style={{ fontWeight: "normal" }}>
-                New Tab
-            </h2>
-=======
 import { useRef } from "react";
 import { getSessionContext } from "../SessionContext"
 
@@ -112,7 +104,6 @@ export function NewTabPage({ goToUrl }) {
                     (view Rammerhead changelog <a target="_blank" rel="noreferrer" href="https://github.com/binary-person/rammerhead/blob/master/CHANGELOG.md">here</a>)
                 </p>
             </div>
->>>>>>> 75540cf (Uhhhh)
         </div>
     )
 }
