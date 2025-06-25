@@ -389,6 +389,7 @@ function Ve(e) {
 }
 
 function SearchSuggestions({ onBlur, onUrlEnter, state }) {
+    const e = getSessionContext();
     const [focusedIdx, setFocusedIdx] = useState(-1);
     const [inputValue, setInputValue] = useState("");
     const [Icon, setIcon] = useState(uiIcons.defaultSearchIcon);
@@ -429,10 +430,10 @@ function SearchSuggestions({ onBlur, onUrlEnter, state }) {
     };
 
     // Handle suggestion selection
-    const selectSuggestion = (text) => {
+    const selectSuggestion = async (text) => {
         let url = Ct(text)
             ? text
-            : "https://www.google.com/search?q=" + encodeURIComponent(text);
+            : (await e.getSearchEngine()) + encodeURIComponent(text);
         state.currentlyTyping = null;
         inputRef.current.blur();
         onUrlEnter(Ve(url));

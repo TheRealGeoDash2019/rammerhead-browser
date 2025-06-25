@@ -3,6 +3,24 @@ import { asyncToGenerator } from "../common";
 import { setIntervalAsync, stopIntervalAsync } from "../setIntervalAsync";
 import { Shuffler } from "./Shuffler";
 
+function waitForElement(selector) {
+    return new Promise(resolve => {
+        if (document.querySelector(selector)) {
+            return resolve(document.querySelector(selector));
+        }
+        const observer = new MutationObserver(() => {
+            if (document.querySelector(selector)) {
+                resolve(document.querySelector(selector));
+                observer.disconnect();
+            }
+        });
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    });
+};
+
 function g(obj) {
     var iterator =
         (typeof Symbol !== "undefined" && obj[Symbol.iterator]) ||
@@ -67,8 +85,10 @@ export class RammerheadSession {
                 l = o.signature;
             await this.updateSessionData(u, l);
         }
+        waitForElement(`[class^="browser-tab-content"]`).then(() => this.setTabTheme());
         await this.setTabFavicon();
         await this.setTabTitle();
+        await this.setSearchEngine();
         this.syncCount = 0;
         await this.syncSession();
         await this.reshuffle();
@@ -91,6 +111,7 @@ export class RammerheadSession {
         let changelog = await (await fetch("/CHANGELOG.md")).text();
         let version = await (await fetch("/version")).text();
         let openSourceVersion = await (await fetch("/version-opensource")).text();
+        this.region = await (await fetch("/rhdc/region")).text();
         this.staticAssets = {
             changelog,
             version,
@@ -365,6 +386,62 @@ export class RammerheadSession {
         t = await t;
         document.title = t || document.title;
         await this._putData("data", { type: "tabTitle", data: t });
+        return t;
+    }
+    
+    async getSearchEngine() {
+        let t = await this._getData("data", "searchEngine");
+        if (t === null || t === undefined) return "https://www.google.com/search?q=";
+        return t.data;
+    }
+
+    async setSearchEngine(t = this.getSearchEngine()) {
+        t = await t;
+        await this._putData("data", { type: "searchEngine", data: t });
+        return t;
+    }
+
+    async getTabTheme() {
+        let t = await this._getData("data", "tabTheming");
+        if (t === null || t === undefined) return { enabled: false, url: "" };
+        return t.data;
+    }
+
+    async setTabTheme(t = this.getTabTheme()) {
+        t = await t;
+        await this._putData("data", { type: "tabTheming", data: t });
+        if (t && "url" in t) {
+            if (t.url.replaceAll(" ", "").length < 1) {
+                document.querySelectorAll("link.custom-theme").forEach(e => {
+                    e.remove();
+                })
+            } else {
+                document.querySelectorAll("link.custom-theme").forEach(e => {
+                    e.remove();
+                })
+                let o = document.createElement("link");
+                o.rel = "stylesheet";
+                o.href = t.url;
+                o.className = "custom-theme";
+                document.head.appendChild(o);
+            }
+        };
+        if (t && "enabled" in t) {
+            const el = document.querySelector(`[class^="browser-tab-content"]`);
+            if (t.enabled === false) {
+                document.documentElement.classList.remove('dark-theme');
+                document.documentElement.classList.remove('custom-theme');
+                document.documentElement.classList.add('light-theme');
+                el.classList.remove('chrome-tabs-dark-theme');
+                el.classList.add('chrome-tabs-light-theme');
+            } else {
+                document.documentElement.classList.add('dark-theme');
+                document.documentElement.classList.add('custom-theme');
+                document.documentElement.classList.remove('light-theme');
+                el.classList.add('chrome-tabs-dark-theme');
+                el.classList.remove('chrome-tabs-light-theme');
+            }
+        };
         return t;
     }
 

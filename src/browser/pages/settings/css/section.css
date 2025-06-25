@@ -1,0 +1,145 @@
+.section {
+    max-width: 80%;
+    width: 80%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+@media (max-width: 800px) {
+    .section {
+        width: 95%;
+        max-width: 95%;
+    }
+
+    .right-side {
+        display: none;
+    }
+
+    .settings-root {
+        margin-right: 0px !important;
+        width: calc(100% - 68px) !important;
+        max-width: calc(100% - 68px) !important;
+    }
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    color: var(--browser-text-primary-color);
+}
+
+.section-header .section-title {
+    color: var(--browser-text-primary-color);
+    font-size: 108%;
+    font-weight: 400;
+    letter-spacing: .25px;
+    margin-bottom: 12px;
+    margin-top: 21px;
+    outline: 0;
+    padding-bottom: 4px;
+    padding-top: 8px;
+}
+
+.section-content {
+    background-color: var(--browser-accent-color-dark);
+    box-shadow: 0px 0px 2px 2px var(--browser-accent-color-dark);
+    border-radius: 8px;
+}
+
+.section-element {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    align-items: center;
+    display: flex;
+    padding: 0px 20px;
+    min-height: 48px;
+}
+
+.section-element.selectable:hover {
+    backdrop-filter: brightness(1.4);
+}
+
+.section-element.extended {
+    min-height: 64px;
+}
+
+.section-element:nth-child(1) {
+    border-top: none !important;
+}
+
+.section-element > .product-logo {
+    max-width: 32px;
+    max-height: 32px;
+    width: 32px;
+    height: 32px;
+    margin-inline-end: 10px;
+}
+
+.section-element > .product-title {
+    font-size: 153.85%;
+    font-weight: 400;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.section-element > .section-labels, .section-element-subcontainer > .section-labels {
+    flex: 1 1 1e-09px;
+    padding-bottom: 12px;
+    padding-top: 12px;
+    text-align: start;
+}
+
+.section-labels > .label, .section-labels > .sublabel {
+    display: flex
+}
+
+.section-labels > .sublabel {
+    color: var(--browser-text-secondary-color);
+}
+
+.selectable {
+    cursor: pointer;
+}
+
+.input-element, .select-element {
+    flex-direction: column;
+}
+
+.input-element > .section-labels, .select-element > .section-labels {
+    width: 100%;
+}
+
+.input-element > .section-input {
+    width: 100%;
+    padding-bottom: 12px;
+}
+
+.select-element > .section-select {
+    width: 100%;
+    margin-bottom: 12px;
+}
+
+.section-icon {
+    max-width: 20px;
+    max-height: 20px;
+    margin-right: 16px;
+}
+
+.section-icon .MuiSvgIcon-root {
+    max-width: 20px;
+    max-height: 20px;
+    width: 20px;
+    height: 20px;
+    fill: var(--browser-text-secondary-color);
+}
+
+.section-element-subcontainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.MuiPaper-root.MuiPaper-elevation {
+    background-color: var(--browser-accent-color);
+    color: var(--browser-text-secondary-color);
+}

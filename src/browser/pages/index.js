@@ -2,7 +2,7 @@ import { ChangelogPage } from "./changelog";
 import { DebuggerPage } from "./debugger";
 import { EmptyPage } from "./empty";
 import { NewTabPage } from "./newtab";
-import { SettingsPage } from "./settings";
+import { SettingsPage } from "./settings/index";
 import { WelcomePage } from "./welcome";
 
 export default ([
