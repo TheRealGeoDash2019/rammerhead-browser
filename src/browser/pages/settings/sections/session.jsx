@@ -17,17 +17,52 @@ export function SessionSection({ browserState }) {
     const [rammerheadRegion, setRammerheadRegion] = useState("Unknown");
     const [profileCreationDate, setProfileCreationDate] = useState("Unknown");
 
+    async function exportProfile() {
+        const exportedProfile = await e.exportBrowserProfile();
+        const n = new Blob([exportedProfile], {
+          type: "application/octet-stream"   
+        });
+        const r = document.createElement("a");
+        r.download = "profile.rf";
+        r.href = URL.createObjectURL(n);
+        r.onclick = function() {
+          setTimeout((function() {
+            URL.revokeObjectURL(n)
+          }));
+        };
+        r.click();
+    }
+
+    function importProfile(dataOverride = null) {
+        return new Promise((resv, rej) => {
+          try {
+            return showOpenFilePicker({
+              multiple: false,
+              accept: ".rf"
+            }).then(async files => {
+              if (files && files[0]) {
+                const fileInfo = await files[0].getFile();
+                const fileContent = await fileInfo.arrayBuffer();
+                return resv(new Uint8Array(fileContent));
+              }
+            }).catch(err => {
+              return rej("Something Broke")
+            })
+          } catch {
+            return rej("Missing APIs")
+          }
+        });
+    };
+
     const handleImport = function() {
-        if (!window["%is-hammerhead%"]) return;
-        if (!window.windowethToppeth) return;
-        return window.importProfile().then(bytes => {
+        return importProfile().then(bytes => {
             e.importBrowserProfile(bytes).then((err) => {
                 if (!err) window.location.reload();
                 else {
                     setErrorMessage("Error whilst Importing: " + err);
-                  setTimeout(() => {
-                    setErrorMessage("");
-                  }, 3500);
+                    setTimeout(() => {
+                        setErrorMessage("");
+                    }, 3500);
                 }
             })
         });
@@ -61,9 +96,9 @@ export function SessionSection({ browserState }) {
                 <InfoElement icon={<PublicIcon />} label="Browser Region" sublabel={rammerheadRegion} />
                 <InfoElement icon={<CalendarMonthIcon />} label="Session Creation Date" sublabel={profileCreationDate} />
                 <ButtonElement label="Import a Rammerhead Session" sublabel={errorMessage} buttonLabel="Import" onClick={() => handleImport()} />
-                <ButtonElement label="Export your Rammerhead Session" buttonLabel="Export" onClick={() => window.exportProfile()} />
+                <ButtonElement label="Export your Rammerhead Session" buttonLabel="Export" onClick={() => exportProfile()} />
                 <InfoElement icon={<WarningIcon />} sublabel="Danger Zone" />
-                <ButtonElement label="Reset Browser and Session" sublabel={`WARNING: This action is irreversable!`} buttonLabel="Reset" onClick={() => window.resetBrowser()} />
+                <ButtonElement label="Reset Browser and Session" sublabel={`WARNING: This action is irreversable!`} buttonLabel="Reset" onClick={() => window?.resetBrowser?.()} />
             </SettingsSection>
         </>
     )
