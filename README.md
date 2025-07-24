@@ -11,6 +11,6 @@ $ npm run dev
 ```
 
 # Credits
-- [Rammerhead Browser by binary-person](https://direct.rammerhaed.org)
+- [Rammerhead Browser by binary-person](https://direct.rammerhead.org)
   - [binary-person](https://github.com/binary-person)
 
